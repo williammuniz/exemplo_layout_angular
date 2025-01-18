@@ -55,6 +55,6 @@ export const routes: Routes = [
     {
         path: 'teachers',
         component: TeachersComponent,
-    },
+    },  
 
 ];

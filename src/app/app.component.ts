@@ -1,16 +1,18 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { fromEvent, map } from 'rxjs';
-import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { filter, fromEvent, map, subscribeOn } from 'rxjs';
 import { MatListModule } from '@angular/material/list';
 import { menuItems } from './shared/models/menu';
 import { MenuItem } from './shared/models/menuItem';
+import { ToolbarMenuComponent } from "./shared/components/toolbar-menu/toolbar-menu.component";
 
 
 export const SCROLL_CONTAINER = 'mat-sidenav-content';
@@ -27,8 +29,8 @@ export const SHADOW_LIMIT = 100;
     MatIconModule,
     MatSidenavModule,
     MatListModule,
-    RouterModule
-  ],
+    RouterModule,
+    MatTooltipModule, ToolbarMenuComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -37,28 +39,35 @@ export class AppComponent {
   isSmallScren = false;
   popText = false;
   applyShadow = false;
-  
+
   items_menu: MenuItem[] = menuItems;
 
+  private breakpointObserver: BreakpointObserver;
+  private route: Router;
+  menuName = '';
 
-  constructor(private breakpointObserver: BreakpointObserver,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    @Inject(DOCUMENT) private document: Document
-  ) {
-
+  constructor() {
+    this.breakpointObserver = inject(BreakpointObserver);
+    this.route = inject(Router);
   }
 
-
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
+    const content = document.getElementsByClassName(SCROLL_CONTAINER)[0];
 
-      const content = this.document.getElementsByClassName(SCROLL_CONTAINER)[0];
-      fromEvent(content, 'scroll')
-        .pipe(map(() => content.scrollTop))
-        .subscribe({
-          next: (value: number) => this.determineHeader(value)
-        })
-    }
+    fromEvent(content, 'scroll')
+      .pipe(map(() => content.scrollTop))
+      .subscribe((value: number) => this.determineHeader(value))
+
+    this.route.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => event as NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      let moduleName = event.url.split('/')[1];
+
+      this.menuName = this.items_menu.filter(
+        (item: MenuItem) => item.link === `/${moduleName}`
+      )[0].label;
+    })
   }
 
 

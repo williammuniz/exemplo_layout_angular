@@ -1,9 +1,17 @@
-<mat-sidenav-container>
-  <mat-sidenav class="sidenav" #sidenav [opened]="!isSmallScren" [fixedInViewport]="true" [mode]="sidenavMode">
-    <mat-toolbar color="primary">Smart Example</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item [routerLink]="['/users']">Users</a>
+<app-toolbar-menu [menuTitle]="menuName" [popText]="popText" [shadow]="applyShadow" [items_menu]="items_menu">
 
+</app-toolbar-menu>
+<mat-sidenav-container>
+  <mat-sidenav class="sidenav mat-elevation-z2" #sidenav [opened]="!isSmallScren" [fixedInViewport]="true"
+    [mode]="sidenavMode">
+    <mat-toolbar>
+      <img class="avatar mat-elevarion-z4" alt="avatar"
+        src="https://images.unsplash.com/photo-1608889476501-ea8c0f0b8d3d?q=80&w=1480&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D">
+      <a routerLink="/users" class="name">William Muniz</a>
+      <p class="designation">Senior Software Engineer</p>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
       @for (item of items_menu; track $index) {
       <a mat-list-item [routerLink]="[item.link]" routerLinkActive="active">
         <mat-icon fontSet="fa" [fontIcon]="item.icon"></mat-icon>
@@ -14,26 +22,22 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-
-    <mat-toolbar class="toobar-menu" color="primary" [class.mat-elevation-z4]="applyShadow">
-      <button mat-icon-button class="example-icon" (click)="sidenav.toggle()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      @if (popText){
-      <span>My App</span>
-      }
-      <span class="example-spacer"></span>
-      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-        <mat-icon>favorite</mat-icon>
-      </button>
-      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-        <mat-icon>share</mat-icon>
-      </button>
-    </mat-toolbar>
     <mat-toolbar class="toobar-submenu" color="primary">
-      @if (!popText){
-      <span>My App</span>
-      }
+      <mat-toolbar-row class="toobar-submenu-top">
+        <button mat-icon-button class="example-icon" (click)="sidenav.toggle()"
+          matTooltip="{{sidenav.opened ? 'Fechar menu' : 'Abrir Menu'}}" matTooltipPosition="right">
+          <mat-icon>
+            {{sidenav.opened ? 'close' : 'menu'}}
+          </mat-icon>
+        </button>
+      </mat-toolbar-row>
+      <mat-toolbar-row class="toobar-submenu-title">
+        @if (!popText){
+        <span>{{ menuName }}</span>
+        }
+      </mat-toolbar-row>
+
+
     </mat-toolbar>
 
     <router-outlet></router-outlet>

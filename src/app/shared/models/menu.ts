@@ -19,7 +19,7 @@ export const menuItems: MenuItem[] = [
     {
         link: '/students',
         icon: 'fa-chalkboard-user',
-        label: 'Dashboard'
+        label: 'Alunos'
     },
     {
         link: '/support',
