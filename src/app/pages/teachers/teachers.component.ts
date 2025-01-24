@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-teachers',
-  imports: [RouterModule, ToolbarTitleComponent, MatIconModule, MatButtonModule, MatTabNavPanel],
+  imports: [RouterModule, ToolbarTitleComponent, MatIconModule, MatButtonModule],
   templateUrl: './teachers.component.html',
   styleUrl: './teachers.component.scss'
 })

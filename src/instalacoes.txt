@@ -1,0 +1,4 @@
+npm i  @angular/flex-layout
+npm i  @fortawesome/fontawesome-free
+npm i json-server - para subir  json-server --watch .\public\DBCourses.json
+

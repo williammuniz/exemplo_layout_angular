@@ -1,0 +1,8 @@
+iniciar servidor json
+
+json-server --watch .\public\DBCourses.json -p 5011  
+
+
+acessar do celular
+
+ng serve --host 0.0.0.0 -o      
